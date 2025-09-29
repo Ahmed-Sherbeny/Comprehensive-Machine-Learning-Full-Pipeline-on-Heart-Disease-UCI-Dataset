@@ -1,0 +1,12 @@
+Best supervised model (binarized target): SVC
+Test macro recall: 0.9062
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0     0.8929    0.8621    0.8772        29
+           1     0.8788    0.9062    0.8923        32
+
+    accuracy                         0.8852        61
+   macro avg     0.8858    0.8842    0.8848        61
+weighted avg     0.8855    0.8852    0.8851        61

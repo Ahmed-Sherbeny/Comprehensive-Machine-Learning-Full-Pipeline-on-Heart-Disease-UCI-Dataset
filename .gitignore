@@ -1,3 +1,4 @@
-.vscode
+.vscode/
 Attachment.pdf
-heart+disease.zip
+heart+disease.zip/
+__pycache__
