@@ -8,7 +8,7 @@ import os
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
-from sklearn.metrics import silhouette_score, make_scorer
+from sklearn.metrics import silhouette_score
 
 
 # In[ ]:
