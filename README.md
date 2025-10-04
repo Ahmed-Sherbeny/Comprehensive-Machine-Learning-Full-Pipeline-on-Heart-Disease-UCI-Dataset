@@ -73,19 +73,19 @@ And even more.
 ├─ requirements.txt
 
 ## Dataset
-- Source: [<ins>UCI Heart Disease Dataset</ins>](https://archive.ics.uci.edu/dataset/45/heart+disease)
+- Source: [UCI Heart Disease Dataset](https://archive.ics.uci.edu/dataset/45/heart+disease)
 
 - Target variable:
     + Values ranging from <font color="green">**0**</font> to <font color="red">**4**</font> representing classes, with each class corresponding to the **existence** or **absence** of heart disease and its **severity**.
 
 ## Installation
-<!-- Create & activate virtual environment -->
+Create & activate virtual environment
 ```
 conda create virtual_env_name
 conda activate virtual_env_name
 ```
 
-<!-- Install dependencies -->
+Install dependencies
 ```
 pip install -r requirements.txt
 ```
@@ -94,14 +94,14 @@ pip install -r requirements.txt
 > This project was made by Python 3.12.7, Please make sure you use v3.12.7 or above for optimal compatibility.
 
 ## Operation
-<!-- Run main.ipynb -->
+Run main.ipynb 
 
 > [!NOTE]
 > If you wish to change parameters, values, datasets, or visulization modes, you can visit **__pipeline_runner.py__** or **__config.py__**.
 
 
 ## Deployment
-<!-- Run app.py -->
+Run app.py
 ```
 streamlit run ui/app.py
 ```
