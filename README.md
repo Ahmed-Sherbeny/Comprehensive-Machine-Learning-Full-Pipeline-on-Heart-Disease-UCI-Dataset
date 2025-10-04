@@ -11,12 +11,10 @@ A full end-to-end machine learning project for the **UCI Heart Disease dataset**
 2. [Repository structure](#repository-structure)
 3. [Dataset](#dataset)
 4. [Installation](#installation)
-5. [Operation](#repository-structure)
-6. [Deployment](#repository-structure)
-7. [Project demo](#repository-structure)
-8. [Acknowledgements](#repository-structure)
-9. [Repository structure](#repository-structure)
-10. [Repository structure](#repository-structure)
+5. [Operation](#operation)
+6. [Deployment](#deployment)
+7. [Project demo](#project-demo)
+8. [Acknowledgements](#acknowledgements)
 
 
 ## Introduction
@@ -75,7 +73,7 @@ And even more.
 ├─ requirements.txt
 
 ## Dataset
-- Source: <ins>[UCI Heart Disease Dataset]</ins>(https://archive.ics.uci.edu/dataset/45/heart+disease)
+- Source: [<ins>UCI Heart Disease Dataset</ins>](https://archive.ics.uci.edu/dataset/45/heart+disease)
 
 - Target variable:
     + Values ranging from <font color="green">**0**</font> to <font color="red">**4**</font> representing classes, with each class corresponding to the **existence** or **absence** of heart disease and its **severity**.
@@ -112,17 +110,17 @@ streamlit run ui/app.py
 > Avoid stopping the app while it is running as it will cause the web server to shut down.
 
 ## Project demo
-![Histogram distribution](image-3.png)
+![Histogram distribution](/project_demo/image-3.png)
 
-![Correlation heatmap](image-4.png)
+![Correlation heatmap](/project_demo/image-4.png)
 
-![PCA analysis](image-5.png)
+![PCA analysis](/project_demo/image-5.png)
 
-![Model prediction](image.png)
+![Model prediction](/project_demo/image.png)
 
-![Test evaluation](image-1.png)
+![Test evaluation](/project_demo/image-1.png)
 
-![ROC Curve](image-2.png)
+![ROC Curve](/project_demo/image-2.png)
 
 ## Acknowledgements
 - [UCI Machine Learning Repository](https://archive.ics.uci.edu/)
