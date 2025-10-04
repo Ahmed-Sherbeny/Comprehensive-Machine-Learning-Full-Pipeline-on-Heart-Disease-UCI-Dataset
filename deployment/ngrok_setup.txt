@@ -1,5 +1,5 @@
 Make a config file for streamlit in the following directory:
-    C:\Users\user_name\.streamlit
+    C:\Users\user_name\.streamlit\config.toml
 
 Config contents:
     [server]
@@ -17,5 +17,5 @@ Then run the following commands in your terminal:
     ngrok config add-authtoken your_auth
     ngrok http 80      # or your desired port number
 
-Then run from your app terminal:
-    streamlit run your_path_to\app.py
+Then run from your repository terminal:
+    streamlit run ui/app.py

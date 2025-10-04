@@ -31,7 +31,7 @@ reload(hyp)
 reload(ptv)
 
 def run_pipeline(cfg: Config):
-    # ----------------------------- Preprocessing -----------------------------
+    # ----------------------------- Preprocessing ----------------------------- #
     df = dp.load_data(cfg.DATASET_ID)                                  # raw
     df_binarized = dp.binarize_output(df.copy(deep= True))                             
 
@@ -57,13 +57,13 @@ def run_pipeline(cfg: Config):
     print("=" * 30)
     dp.visualize_data(X, y, cfg.PRE_TRAIN_VISUALIZE_MODE)
 
-    # ----------------------------- PCA (diagnostic only) -----------------------------
+    # ----------------------------- PCA (diagnostic only) ----------------------------- #
     pca, x_pca = pc.pca_analysis(x_train, cfg.N_PCA_COMPONENTS)
     pc.optimal_num_of_components(pca)
     print("=" * 30)
     pc.pca_visualization(x_train, y_train)
 
-    # ----------------------------- Feature Selection -----------------------------
+    # ----------------------------- Feature Selection ----------------------------- #
     # Important: clone to avoid overwriting the same estimator when fitting twice
     est_orig = clone(cfg.ESTIMATOR).fit(x_train, y_train)
     est_bin  = clone(cfg.ESTIMATOR).fit(x_train, y_train_b)
@@ -81,11 +81,10 @@ def run_pipeline(cfg: Config):
     sel_mask_bin = fs.RFE_select(est_bin, cfg.STEP, x_train, y_train_b, cfg.CV)
     sel_names_bin = fs.get_selected_feature_names(x_train, sel_mask_bin)
 
-    # Subset features for train/test (each branch)
     X_train_sel, X_test_sel = fs.model_selected_features(x_train, x_test, sel_names_orig)
     X_train_sel_b, X_test_sel_b = fs.model_selected_features(x_train, x_test, sel_names_bin)
 
-    # ----------------------------- Train base models -----------------------------
+    # ----------------------------- Train base models ----------------------------- #
     print("\n--- Training classification models (original target) ---")
     trained_svp = svp.train_model_svp(X_train_sel, y_train)
     print("\n--- Training classification models (binarized target) ---")
@@ -96,7 +95,7 @@ def run_pipeline(cfg: Config):
     print("\n--- Training clustering models (binarized features) ---")
     trained_unsvp_b = unsvp.train_model_unsvp(X_train_sel_b)
 
-    # ----------------------------- Train-set evaluation (ONE pass each) -----------------------------
+    # ----------------------------- Train-set evaluation (ONE pass each) ----------------------------- #
     print("\n--- Train set evaluation (original) ---")
     tr_scores, tr_recalls, tr_ROC, tr_AUC = svp.evaluate_svp_models(trained_svp, X_train_sel, y_train, cfg.DATASET_NAME)
     unsup_tr_scores = unsvp.evaluate_unsvp_models(trained_unsvp, X_train_sel, y_train, cfg.DATASET_NAME)
@@ -105,7 +104,7 @@ def run_pipeline(cfg: Config):
     tr_scores_b, tr_recalls_b, tr_ROC_b, tr_AUC_b = svp.evaluate_svp_models(trained_svp_b, X_train_sel_b, y_train_b, cfg.DATASET_NAME)
     unsup_tr_scores_b = unsvp.evaluate_unsvp_models(trained_unsvp_b, X_train_sel_b, y_train_b, cfg.DATASET_NAME)
 
-    # ----------------------------- Hyperparameter Tuning (Grid + Random) -----------------------------
+    # ----------------------------- Hyperparameter Tuning (Grid + Random) ----------------------------- #
     print("\n--- Hyperparameter tuning (GridSearchCV + RandomizedSearchCV) ---")
     optimal_grid_svp = {}
     optimal_rand_svp = {}
@@ -177,7 +176,7 @@ def run_pipeline(cfg: Config):
             search_est_u = Pipeline([("model", base_model)])
 
             gs_u = hyp.grid_search(
-                X_train_sel,                      # no y
+                X_train_sel,                      
                 estimator=search_est_u,
                 param_grid=cfg.PARAM_GRID_UNSVP[name],
                 cv=cfg.CV,
@@ -222,7 +221,7 @@ def run_pipeline(cfg: Config):
             )
             optimal_rand_unsvp_b[name] = rs_ub
             print(f"{name} (binarized unsupervised) RandomizedSearch best_score_: {rs_ub.best_score_:.4f} | best_params_: {rs_ub.best_params_}")
-    # ----------------------------- Test-set evaluation (ONE pass each) -----------------------------
+    # ----------------------------- Test-set evaluation (ONE pass each) ----------------------------- #
     print("\n--- Test set evaluation (original) ---")
     test_scores, test_recalls, test_ROC, test_AUC = svp.evaluate_svp_models(trained_svp, X_test_sel, y_test, cfg.DATASET_NAME)
     unsup_test_scores = unsvp.evaluate_unsvp_models(trained_unsvp, X_test_sel, y_test, cfg.DATASET_NAME)
@@ -231,7 +230,7 @@ def run_pipeline(cfg: Config):
     test_scores_b, test_recalls_b, test_ROC_b, test_AUC_b = svp.evaluate_svp_models(trained_svp_b, X_test_sel_b, y_test_b, cfg.DATASET_NAME)
     unsup_test_scores_b = unsvp.evaluate_unsvp_models(trained_unsvp_b, X_test_sel_b, y_test_b, cfg.DATASET_NAME)
 
-    # ----------------------------- Visualizations (optional) -----------------------------
+    # ----------------------------- Visualizations (optional) ----------------------------- #
     print("\n--- Model visualization (original) ---")
     ptv.visualize_classification(X_test_sel, y_test, trained_svp, cfg.POST_TRAIN_VISUALIZE_MODE)
     ptv.visualize_cluster(X_test_sel, trained_unsvp, cfg.N_CLUSTERS)
@@ -240,7 +239,7 @@ def run_pipeline(cfg: Config):
     ptv.visualize_classification(X_test_sel_b, y_test_b, trained_svp_b, cfg.POST_TRAIN_VISUALIZE_MODE)
     ptv.visualize_cluster(X_test_sel_b, trained_unsvp_b, cfg.N_CLUSTERS)
 
-    # ----------------------------- Select and save best model -----------------------------
+    # ----------------------------- Select and save best model ----------------------------- #
     best_model_name = max(test_recalls, key=test_recalls.get)   
     best_model = trained_svp[best_model_name]
     print(f"\nBest model (original target) based on Test recall: {best_model_name} "

@@ -14,7 +14,6 @@ import sys
 import os
 from pyngrok import ngrok as ng
 
-# --- Import project modules ---
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # D:\ML
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
@@ -23,11 +22,6 @@ from notebooks import data_preprocessing as dp
 from notebooks import pca_analysis as pc
 from notebooks.config import Config as cfg
 st.set_page_config(page_title="Heart Disease – Interactive Predictor", layout="wide")
-
-# ========================
-# Helpers
-# ========================
-
 
 @st.cache_resource
 def _start_tunnel():
@@ -46,7 +40,7 @@ def _start_tunnel():
     except Exception:
         pass
 
-    # Start fresh tunnel on 8501
+    # Start tunnel on 8501
     tun = ng.connect(addr=8501, proto="http", bind_tls=True)
     return tun
 
@@ -60,9 +54,7 @@ except Exception as e:
 
 @st.cache_data(show_spinner=False)
 def load_uci_heart():
-    # Uses your dp.load_data() helper (UCI id is set in cfg)
     df = dp.load_data(cfg.DATASET_ID)
-    # Keep original multi-class label in "num" and also a binarized target "num_bin"
     df_bin = dp.binarize_output(df.copy(deep=True))
     return df, df_bin
 
@@ -75,18 +67,16 @@ def feature_stats(df, target_col="num"):
 @st.cache_resource(show_spinner=False)
 def build_model(model_name: str, binarized: bool, test_size: float = 0.2, random_state: int = 42):
     """Train a simple pipeline (StandardScaler + selected model) for the UI demo.
-    This is intentionally light-weight and independent from your full training pipeline.
+    This is intentionally light-weight and independent from the full training pipeline.
     """
     # Get data
     df, df_bin = load_uci_heart()
     df_use = df_bin if binarized else df
     X, y = dp.split_features_target(df_use, target_col="num")
 
-    # Fill missing, split, and train
     X = dp.fill_missing(X, cfg.MISSIING_VALUES_COLUMNS)
     X_train, X_test, y_train, y_test = dp.split_train_test(X, y, test_size=test_size, random_state=random_state)
 
-    # Pick model from your config registry
     if model_name not in cfg.CLASSIFICATION_MODELS:
         raise ValueError(f"Unknown model '{model_name}'. Choose one of: {list(cfg.CLASSIFICATION_MODELS)}")
 
@@ -151,9 +141,6 @@ def predict_and_report(model, X_test, y_test, single_row: pd.DataFrame, is_binar
         except Exception as e:
             st.info(f"ROC/AUC not available: {e}")
 
-# ========================
-# UI
-# ========================
 st.title("Heart Disease Demo")
 
 tab_predict, tab_explore = st.tabs(["🔮 Interactive Prediction", "📊 Explore Dataset & Trends"])
@@ -179,7 +166,7 @@ with tab_predict:
         predict_and_report(model, X_test, y_test, input_row, is_binarized=binarized)
 
 with tab_explore:
-    st.subheader("Class Distribution")
+    st.subheader("Class Distribution (Histogram plot)")
     df, df_bin = load_uci_heart()
 
     # Choose which version to explore
