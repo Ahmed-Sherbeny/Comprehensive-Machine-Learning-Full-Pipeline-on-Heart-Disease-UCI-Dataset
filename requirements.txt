@@ -1,0 +1,30 @@
+Environments: 
+    Setup of a virtual environmet (preferable to global environmet to avoid version conflicts).
+
+Python:
+    This project was made by python 3.12.7, 3.10 or higher is preferred.
+
+Package managers (anaconda/pip):
+    This project was made by conda 24.11.3. Please ensure using this version or higher.
+
+Third parties libraries:
+    libraries needed for this project:
+        1- numpy v1.26.4      (Mathematical computations)
+        2- scipy v1.13.1      (Mathematical computations)
+        3- pandas v2.2.2      (Data manipulation)
+        4- ucimlrepo v0.0.7   (Dataset retrieval)
+        5- matplotlib v3.9.2  (Data visualization)
+        6- seaborn v0.13.2    (Data visualization)
+        7- sklearn v1.5.1     (Machine learning)
+        8- streamlit v1.37.1  (Web framework)
+        9- pyngrok v7.4.0     (Web deployment
+
+Repository environmet:
+    Please ensure you have __init__.py files in 'notebooks', 'ui' folders and one in root folder.
+
+Code execution:
+    Make sure the program is running as a module, by inserting the following in the command-line:
+        python -m ui.app
+    
+    To run start the app on a browser:
+        streamlit run your_path_to\app.py
